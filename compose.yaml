@@ -27,9 +27,6 @@ services:
     restart: always
     ports:
       - "27017:27017"
-    networks:
-      app-network:
-        ipv4_address: 173.17.0.10
     volumes:
       - config-data:/data/db
     command:
@@ -54,9 +51,6 @@ services:
     restart: always
     ports:
       - "27018:27018"
-    networks:
-      app-network:
-        ipv4_address: 173.17.0.9
     volumes:
       - shard1-data:/data/db
     command:
@@ -80,9 +74,6 @@ services:
     restart: always
     ports:
       - "27019:27019"
-    networks:
-      app-network:
-        ipv4_address: 173.17.0.8
     volumes:
       - shard2-data:/data/db
     command:
@@ -106,11 +97,10 @@ services:
     restart: always
     depends_on:
       - configSrv
+      - shard1
+      - shard2
     ports:
       - "27020:27020"
-    networks:
-      app-network:
-        ipv4_address: 173.17.0.7
     command:
       [
         "mongos", #обычная mongo в режиме роутера
@@ -124,16 +114,6 @@ services:
       test: [ "CMD", "mongosh","--port", "27020", "--eval", "db.runCommand('ping').ok", "--quiet" ]
       interval: 5s
       start_period: 10s
-
-networks:
-  app-network:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 173.17.0.0/16
-
-
 
 volumes:
   config-data:
