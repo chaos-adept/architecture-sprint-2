@@ -59,10 +59,10 @@ exit();
 EOF
 
 ###
-# Инициализируем роутер и шарды, через роутер 2
+# Инициализируем роутер и шарды, через роутер
 ###
 
-docker-compose exec -T mongos_router2 mongosh --port 27017 <<EOF
+docker-compose exec -T mongos_router mongosh --port 27017 <<EOF
 
 sh.addShard("rs_shard1/shard1_primary:27017")
 sh.addShard("rs_shard2/shard2_primary:27017")
@@ -76,10 +76,10 @@ EOF
 
 
 ###
-# Инициализируем бд через роутер 1
+# Инициализируем бд через роутер
 ###
 
-docker compose exec -T mongos_router1 mongosh --port 27017 <<EOF
+docker compose exec -T mongos_router mongosh --port 27017 <<EOF
 
 use mongodb1
 

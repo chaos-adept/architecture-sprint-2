@@ -174,9 +174,9 @@ services:
       retries: 3
 
   # Роутеры
-  mongos_router1:
+  mongos_router:
     image: mongo:latest
-    container_name: mongos_router1
+    container_name: mongos_router
     restart: always
     depends_on:
       - configSrv
@@ -184,31 +184,6 @@ services:
       - shard2_primary
     ports:
       - "27028:27017"
-    command:
-      [
-        "mongos", 
-        "--configdb", 
-        "config_server/configSrv:27017", 
-        "--bind_ip_all", 
-        "--port", 
-        "27017"
-      ]
-    healthcheck:
-      test: [ "CMD", "mongosh","--port", "27017", "--eval", "db.runCommand('ping').ok", "--quiet" ]
-      interval: 5s
-      timeout: 15s
-      retries: 3
-
-  mongos_router2:
-    image: mongo:latest
-    container_name: mongos_router2
-    restart: always
-    depends_on:
-      - configSrv
-      - shard1_primary
-      - shard2_primary
-    ports:
-      - "27029:27017"
     command:
       [
         "mongos", 
@@ -232,12 +207,11 @@ services:
       dockerfile: Dockerfile
     image: kazhem/pymongo_api:1.0.0
     depends_on:
-      - mongos_router1
-      - mongos_router2
+      - mongos_router
     ports:
       - 8080:8080
     environment:
-      MONGODB_URL: "mongodb://mongos_router2:27017"
+      MONGODB_URL: "mongodb://mongos_router:27017"
       MONGODB_DATABASE_NAME: "mongodb1"
 
 volumes:
