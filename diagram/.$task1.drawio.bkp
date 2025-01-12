@@ -16,11 +16,8 @@
         <mxCell id="IR5tcByoalNEsjsCgNEc-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zA23MoTUsTF4_91t8viU-3" target="IR5tcByoalNEsjsCgNEc-1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="IR5tcByoalNEsjsCgNEc-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="zA23MoTUsTF4_91t8viU-3" target="IR5tcByoalNEsjsCgNEc-17">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="zA23MoTUsTF4_91t8viU-3" value="pymongo-api" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="110" y="250" width="120" height="60" as="geometry" />
+          <mxGeometry x="230" y="310" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="IR5tcByoalNEsjsCgNEc-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="IR5tcByoalNEsjsCgNEc-1" target="IR5tcByoalNEsjsCgNEc-11">
           <mxGeometry relative="1" as="geometry" />
@@ -57,9 +54,6 @@
         </mxCell>
         <mxCell id="IR5tcByoalNEsjsCgNEc-10" value="rs_shard2" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="650" y="310" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="IR5tcByoalNEsjsCgNEc-17" value="redis" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="270" y="110" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

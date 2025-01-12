@@ -2,6 +2,16 @@ version: '3'
 
 services:
   
+  redis_node:
+    image: "redis:latest"
+    container_name: redis_node
+    ports:
+      - "6379"
+    volumes:
+      - redis_node_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+
   # Первый шард
   shard1-1:
     image: mongo:latest
@@ -213,8 +223,12 @@ services:
     environment:
       MONGODB_URL: "mongodb://mongos_router:27017"
       MONGODB_DATABASE_NAME: "somedb"
+      REDIS_URL: redis://redis_node:6379
 
 volumes:
+  #redis
+  redis_node_data:
+  #mongo
   config-data:
   shard1-primary-data:
   shard1-secondary1-data:
