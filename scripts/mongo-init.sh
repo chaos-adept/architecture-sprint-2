@@ -26,15 +26,15 @@ EOF
 # Инициализируем шарды
 ###
 
-docker-compose exec -T shard1_primary mongosh --port 27017 <<EOF
+docker-compose exec -T shard1-1 mongosh --port 27017 <<EOF
 
 rs.initiate(
   {
     _id: "rs_shard1",
     members: [
-      { _id: 0, host: "shard1_primary:27017" },
-      { _id: 1, host: "shard1_secondary1:27017" },
-      { _id: 2, host: "shard1_secondary2:27017" }
+      { _id: 0, host: "shard1-1:27017" },
+      { _id: 1, host: "shard1-2:27017" },
+      { _id: 2, host: "shard1-3:27017" }
     ]
   }
 );
@@ -42,15 +42,15 @@ rs.initiate(
 exit();
 EOF
 
-docker-compose exec -T shard2_primary mongosh --port 27017 <<EOF
+docker-compose exec -T shard2-1 mongosh --port 27017 <<EOF
 
 rs.initiate(
   {
     _id: "rs_shard2",
     members: [
-      { _id: 0, host: "shard2_primary:27017" },
-      { _id: 1, host: "shard2_secondary1:27017" },
-      { _id: 2, host: "shard2_secondary2:27017" }
+      { _id: 0, host: "shard2-1:27017" },
+      { _id: 1, host: "shard2-2:27017" },
+      { _id: 2, host: "shard2-3:27017" }
     ]
   }
 );
@@ -64,11 +64,11 @@ EOF
 
 docker-compose exec -T mongos_router mongosh --port 27017 <<EOF
 
-sh.addShard("rs_shard1/shard1_primary:27017")
-sh.addShard("rs_shard2/shard2_primary:27017")
+sh.addShard("rs_shard1/shard1-1:27017")
+sh.addShard("rs_shard2/shard2-1:27017")
 
-sh.enableSharding("mongodb1");
-sh.shardCollection("mongodb1.helloDoc", { "name" : "hashed" } );
+sh.enableSharding("somedb");
+sh.shardCollection("somedb.helloDoc", { "name" : "hashed" } );
 
 exit();
 
@@ -81,7 +81,7 @@ EOF
 
 docker compose exec -T mongos_router mongosh --port 27017 <<EOF
 
-use mongodb1
+use somedb
 
 for(var i = 0; i < 1000; i++) db.helloDoc.insert({age:i, name:"ly"+i})
 

@@ -3,9 +3,9 @@ version: '3'
 services:
   
   # Первый шард
-  shard1_primary:
+  shard1-1:
     image: mongo:latest
-    container_name: shard1_primary
+    container_name: shard1-1
     restart: always
     ports:
       - "27021:27017"
@@ -27,9 +27,9 @@ services:
       timeout: 15s
       retries: 3
 
-  shard1_secondary1:
+  shard1-2:
     image: mongo:latest
-    container_name: shard1_secondary1
+    container_name: shard1-2
     restart: always
     ports:
       - "27022:27017"
@@ -51,9 +51,9 @@ services:
       timeout: 15s
       retries: 3
 
-  shard1_secondary2:
+  shard1-3:
     image: mongo:latest
-    container_name: shard1_secondary2
+    container_name: shard1-3
     restart: always
     ports:
       - "27023:27017"
@@ -76,9 +76,9 @@ services:
       retries: 3
 
   # Второй шард
-  shard2_primary:
+  shard2-1:
     image: mongo:latest
-    container_name: shard2_primary
+    container_name: shard2-1
     restart: always
     ports:
       - "27024:27017"
@@ -100,9 +100,9 @@ services:
       timeout: 15s
       retries: 3
 
-  shard2_secondary1:
+  shard2-2:
     image: mongo:latest
-    container_name: shard2_secondary1
+    container_name: shard2-2
     restart: always
     ports:
       - "27025:27017"
@@ -124,9 +124,9 @@ services:
       timeout: 15s
       retries: 3
 
-  shard2_secondary2:
+  shard2-3:
     image: mongo:latest
-    container_name: shard2_secondary2
+    container_name: shard2-3
     restart: always
     ports:
       - "27026:27017"
@@ -180,8 +180,8 @@ services:
     restart: always
     depends_on:
       - configSrv
-      - shard1_primary
-      - shard2_primary
+      - shard1-1
+      - shard2-1
     ports:
       - "27028:27017"
     command:
@@ -212,7 +212,7 @@ services:
       - 8080:8080
     environment:
       MONGODB_URL: "mongodb://mongos_router:27017"
-      MONGODB_DATABASE_NAME: "mongodb1"
+      MONGODB_DATABASE_NAME: "somedb"
 
 volumes:
   config-data:
