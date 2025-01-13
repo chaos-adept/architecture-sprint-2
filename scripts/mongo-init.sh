@@ -1,13 +1,12 @@
 #!/bin/bash
 
-#set -x
 set -e
 
 ###
 # Инициализируем конфиг сервер
 ###
 
-docker-compose exec -T configSrv mongosh --port 27017 <<EOF
+docker-compose exec -T configSrv mongosh --quiet --port 27017 <<EOF
 
 rs.initiate(
   {
@@ -26,7 +25,7 @@ EOF
 # Инициализируем шарды
 ###
 
-docker-compose exec -T shard1-1 mongosh --port 27017 <<EOF
+docker-compose exec -T shard1-1 mongosh --quiet --port 27017 <<EOF
 
 rs.initiate(
   {
@@ -42,7 +41,7 @@ rs.initiate(
 exit();
 EOF
 
-docker-compose exec -T shard2-1 mongosh --port 27017 <<EOF
+docker-compose exec -T shard2-1 mongosh --quiet --port 27017 <<EOF
 
 rs.initiate(
   {
@@ -62,7 +61,7 @@ EOF
 # Инициализируем роутер и шарды, через роутер
 ###
 
-docker-compose exec -T mongos_router mongosh --port 27017 <<EOF
+docker-compose exec -T mongos_router mongosh --quiet --port 27017 <<EOF
 
 sh.addShard("rs_shard1/shard1-1:27017")
 sh.addShard("rs_shard2/shard2-1:27017")
@@ -79,7 +78,7 @@ EOF
 # Инициализируем бд через роутер
 ###
 
-docker compose exec -T mongos_router mongosh --port 27017 <<EOF
+docker compose exec -T mongos_router mongosh --quiet --port 27017 <<EOF
 
 use somedb
 
@@ -89,3 +88,18 @@ db.helloDoc.countDocuments()
 exit();
 EOF
 
+echo ""
+echo "shard1-1 doc count"
+docker compose exec -T shard1-1 mongosh --quiet --port 27017 <<EOF
+use somedb;
+db.helloDoc.countDocuments();
+exit();
+EOF
+
+echo ""
+echo "shard2-1 doc count"
+docker compose exec -T shard2-1 mongosh --quiet --port 27017 <<EOF
+use somedb;
+db.helloDoc.countDocuments();
+exit();
+EOF
