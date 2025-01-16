@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-  
   redis_node:
     image: "redis:latest"
     container_name: redis_node
@@ -20,7 +19,7 @@ services:
     ports:
       - "27021:27017"
     volumes:
-      - shard1-primary-data:/data/db
+      - shard1-1-data:/data/db
     command:
       [
         "mongod", 
@@ -44,7 +43,7 @@ services:
     ports:
       - "27022:27017"
     volumes:
-      - shard1-secondary1-data:/data/db
+      - shard1-2-data:/data/db
     command:
       [
         "mongod", 
@@ -68,7 +67,7 @@ services:
     ports:
       - "27023:27017"
     volumes:
-      - shard1-secondary2-data:/data/db
+      - shard1-3-data:/data/db
     command:
       [
         "mongod", 
@@ -93,7 +92,7 @@ services:
     ports:
       - "27024:27017"
     volumes:
-      - shard2-primary-data:/data/db
+      - shard2-1-data:/data/db
     command:
       [
         "mongod", 
@@ -117,7 +116,7 @@ services:
     ports:
       - "27025:27017"
     volumes:
-      - shard2-secondary1-data:/data/db
+      - shard2-2-data:/data/db
     command:
       [
         "mongod", 
@@ -141,7 +140,7 @@ services:
     ports:
       - "27026:27017"
     volumes:
-      - shard2-secondary2-data:/data/db
+      - shard2-3-data:/data/db
     command:
       [
         "mongod", 
@@ -190,8 +189,6 @@ services:
     restart: always
     depends_on:
       - configSrv
-      - shard1-1
-      - shard2-1
     ports:
       - "27028:27017"
     command:
@@ -230,9 +227,9 @@ volumes:
   redis_node_data:
   #mongo
   config-data:
-  shard1-primary-data:
-  shard1-secondary1-data:
-  shard1-secondary2-data:
-  shard2-primary-data:
-  shard2-secondary1-data:
-  shard2-secondary2-data:
+  shard1-1-data:
+  shard1-2-data:
+  shard1-3-data:
+  shard2-1-data:
+  shard2-2-data:
+  shard2-3-data:
