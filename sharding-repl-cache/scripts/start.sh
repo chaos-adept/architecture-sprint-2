@@ -4,12 +4,13 @@ set -x
 set -e
 
 script_full_path=$(dirname "$0")
+cd $script_full_path
 
 echo "docker compose up"
 docker compose up -d
 
 echo "init data"
-bash "$script_full_path/mongo-init.sh"
+./mongo-init.sh
 
 echo "app - get root"
 curl -s -X 'GET' \

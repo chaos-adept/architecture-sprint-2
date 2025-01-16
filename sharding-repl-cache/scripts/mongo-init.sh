@@ -118,20 +118,23 @@ exit();
 EOF
 
 echo "";
-
-echo ""
+echo "=================="
 echo "shard1-1 doc count"
+echo "=================="
 docker compose exec -T shard1-1 mongosh --quiet --port 27017 <<EOF
 use somedb;
 db.helloDoc.countDocuments();
 exit();
 EOF
+echo "=================="
 
 echo "";
-echo ""
+echo "=================="
 echo "shard2-1 doc count"
+echo "=================="
 docker compose exec -T shard2-1 mongosh --quiet --port 27017 <<EOF
 use somedb;
 db.helloDoc.countDocuments();
 exit();
 EOF
+echo "=================="
