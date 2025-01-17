@@ -12,6 +12,8 @@ docker compose up -d
 echo "init data"
 ./mongo-init.sh
 
+docker compose ps
+
 echo "app - get root"
 curl -s -X 'GET' \
   'http://localhost:8080/' \
