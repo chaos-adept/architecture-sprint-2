@@ -1,0 +1,124 @@
+version: '3'
+
+services:
+  
+  # Первый шард
+  shard1:
+    image: mongo:latest
+    container_name: shard1
+    restart: always
+    ports:
+      - "27021:27017"
+    volumes:
+      - shard1-data:/data/db
+    command:
+      [
+        "mongod", 
+        "--shardsvr", 
+        "--replSet", 
+        "shard1", 
+        "--bind_ip_all", 
+        "--port", 
+        "27017"
+      ]
+    healthcheck:
+      test: [ "CMD", "mongosh","--port", "27017", "--eval", "db.runCommand('ping').ok", "--quiet" ]
+      interval: 5s
+      timeout: 15s
+      retries: 3
+
+
+  # Второй шард
+  shard2:
+    image: mongo:latest
+    container_name: shard2
+    restart: always
+    ports:
+      - "27024:27017"
+    volumes:
+      - shard2-data:/data/db
+    command:
+      [
+        "mongod", 
+        "--shardsvr", 
+        "--replSet", 
+        "shard2", 
+        "--bind_ip_all", 
+        "--port", 
+        "27017"
+      ]
+    healthcheck:
+      test: [ "CMD", "mongosh","--port", "27017", "--eval", "db.runCommand('ping').ok", "--quiet" ]
+      interval: 5s
+      timeout: 15s
+      retries: 3
+
+  # Сервер конфигурации
+  configSrv:
+    image: mongo:latest
+    container_name: configSrv
+    restart: always
+    ports:
+      - "27027:27017"
+    volumes:
+      - config-data:/data/db
+    command:
+      [
+        "mongod", 
+        "--configsvr", 
+        "--replSet", 
+        "config_server", 
+        "--bind_ip_all", 
+        "--port", 
+        "27017"
+      ]
+    healthcheck:
+      test: [ "CMD", "mongosh","--port", "27017", "--eval", "db.runCommand('ping').ok", "--quiet" ]
+      interval: 5s
+      timeout: 15s
+      retries: 3
+
+  # Роутеры
+  mongos_router:
+    image: mongo:latest
+    container_name: mongos_router
+    restart: always
+    depends_on:
+      - configSrv
+    ports:
+      - "27028:27019"
+    command:
+      [
+        "mongos", 
+        "--configdb", 
+        "config_server/configSrv:27017", 
+        "--bind_ip_all", 
+        "--port", 
+        "27019"
+      ]
+    healthcheck:
+      test: [ "CMD", "mongosh","--port", "27019", "--eval", "db.runCommand('ping').ok", "--quiet" ]
+      interval: 5s
+      timeout: 15s
+      retries: 3
+
+  # API приложение
+  pymongo_api:
+    container_name: pymongo_api
+    build: 
+      context: api_app
+      dockerfile: Dockerfile
+    image: kazhem/pymongo_api:1.0.0
+    depends_on:
+      - mongos_router
+    ports:
+      - 8080:8080
+    environment:
+      MONGODB_URL: "mongodb://mongos_router:27019"
+      MONGODB_DATABASE_NAME: "somedb"
+
+volumes:
+  #mongo
+  config-data:
+  shard1-data:
+  shard2-data:

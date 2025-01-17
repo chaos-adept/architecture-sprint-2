@@ -1,35 +1,33 @@
 # pymongo-api
 
-## Как запустить
+## Как запустить приложение
 
 Запускаем mongodb и приложение
 
 ```shell
-docker compose up -d
+./sharding-repl-cache/scripts/start.sh
 ```
 
-Заполняем mongodb данными
+## Как проверить приложение
+
+`start.sh` выводит все данные в консоль, а также возможена проверка через браузер
+по адресу:
+[http://localhost:8080](http://localhost:8080)
+
+
+## Расположение диаграм
+
+Диаграммы расположены в папке diagrams и пронумерованы в соответствии с пунктами задания:
+
+* [Задание 1. Планирование (diagram/task1.drawio )](diagram/task1.drawio)
+* [Задание 5. Service Discovery и балансировка с API Gateway (diagram/task5.drawio)](diagram/task5.drawio)
+* [Задание 6. CDN (diagram/task6.drawio)](diagram/task6.drawio)
+
+
+## После проверки
+
+удалить volumes и остановить инраструктуру можно через
 
 ```shell
-./scripts/mongo-init.sh
+./sharding-repl-cache/scripts/stop.sh
 ```
-
-## Как проверить
-
-### Если вы запускаете проект на локальной машине
-
-Откройте в браузере http://localhost:8080
-
-### Если вы запускаете проект на предоставленной виртуальной машине
-
-Узнать белый ip виртуальной машины
-
-```shell
-curl --silent http://ifconfig.me
-```
-
-Откройте в браузере http://<ip виртуальной машины>:8080
-
-## Доступные эндпоинты
-
-Список доступных эндпоинтов, swagger http://<ip виртуальной машины>:8080/docs
