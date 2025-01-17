@@ -6,6 +6,9 @@ set -e
 script_full_path=$(dirname "$0")
 cd $script_full_path
 
+docker version
+docker compose version
+
 echo "docker compose up"
 docker compose up -d
 
